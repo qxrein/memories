@@ -107,6 +107,11 @@ fun MemoriesMainScreen() {
     
     val context = LocalContext.current
     
+    // Handle system back navigation when in settings
+    BackHandler(enabled = showSettings) {
+        showSettings = false
+    }
+    
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
         rememberTopAppBarState()
     )
