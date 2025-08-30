@@ -91,6 +91,9 @@ dependencies {
     // Permissions
     implementation(libs.permissions.compose)
     
+    // WorkManager for notifications
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

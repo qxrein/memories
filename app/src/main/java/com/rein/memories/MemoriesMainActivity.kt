@@ -450,36 +450,6 @@ fun SettingsContent() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Notification toggle
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    text = "Notifications",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = "Enable push notifications for memories",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Switch(
-                checked = false, // TODO: Connect to actual notification state
-                onCheckedChange = { /* TODO: Handle notification toggle */ },
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = MaterialTheme.colorScheme.primary,
-                    checkedTrackColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            )
-        }
-        
         // App version
         val context = LocalContext.current
         Card(
@@ -529,7 +499,7 @@ fun SettingsContent() {
                         )
                     }
                     Icon(
-                        imageVector = Icons.Default.Star,
+                        imageVector = Icons.Default.Favorite,
                         contentDescription = "Star",
                         tint = MaterialTheme.colorScheme.primary
                     )
