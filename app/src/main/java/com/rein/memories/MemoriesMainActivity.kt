@@ -11,8 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -181,18 +185,44 @@ fun MemoriesMainScreen() {
     ) { innerPadding ->
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
         var didBounce by remember { mutableStateOf(false) }
-        if (showSettings) {
-            // Settings page without drawer
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                SettingsContent()
-            }
-        } else {
-            // Main page with drawer
-            BottomSheetScaffold(
+        
+        AnimatedContent(
+            targetState = showSettings,
+            transitionSpec = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(350, easing = FastOutSlowInEasing)
+                ) + fadeIn(
+                    animationSpec = tween(350)
+                ) togetherWith slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -(fullWidth / 4) },
+                    animationSpec = tween(350, easing = FastOutSlowInEasing)
+                ) + fadeOut(
+                    animationSpec = tween(350)
+                ) + scaleOut(
+                    targetScale = 0.9f,
+                    animationSpec = tween(350, easing = FastOutSlowInEasing)
+                )
+            },
+            label = "settings_navigation"
+        ) { isSettings ->
+            if (isSettings) {
+                // Settings page without drawer
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .shadow(
+                            elevation = 8.dp,
+                            shape = RoundedCornerShape(0.dp),
+                            spotColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f)
+                        )
+                ) {
+                    SettingsContent()
+                }
+            } else {
+                // Main page with drawer
+                BottomSheetScaffold(
                 scaffoldState = bottomSheetScaffoldState,
                 modifier = Modifier
                     .fillMaxSize()
@@ -321,6 +351,7 @@ fun MemoriesMainScreen() {
                     onDateSelected = { selectedDate = it }
                 )
             }
+        }
         }
     }
 }
